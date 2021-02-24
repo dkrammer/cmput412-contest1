@@ -1,0 +1,3 @@
+Two service servers, one for image stuff, the other for movement
+Duncan movement
+Alex Image
