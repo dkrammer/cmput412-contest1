@@ -18,6 +18,7 @@ class LoadFeature(object):
         self.image_sub = rospy.Subscriber("/camera/rgb/image_raw",Image,self.camera_callback)
         self.bridge_object = CvBridge()
         self.cv_image
+        self.cube_image
         
 
     def camera_callback(self,data):
@@ -27,7 +28,15 @@ class LoadFeature(object):
         except CvBridgeError as e:
             print(e)
 
+    def take_picture_of_cube():
+        self.cube_image = np.copy(self.cv_image)
+
+    #TODO implement this
+    def filter_colors(img, color):
+        return False
+
     #TODO add picture parameters and remove HOG person detection     
+    #TODO determine if the camera is the same as picture
     def feature_detection():    
 
         image_1 = cv2.imread('/home/user/catkin_ws/src/project/images/wanted.jpg',1)
