@@ -1,24 +1,24 @@
 #! /usr/bin/env python
 
 import rospy 
-import sensor_msgs.msg import Image
+from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
 #TODO import a suitable message. 
-from std_srvs.srv import Empty, EmptyResponse # you import the service message python classes generated from Empty.srv.
+#from std_srvs.srv import Empty, EmptyResponse # you import the service message python classes generated from Empty.srv.
 
 #TODO put in class/ functions that can do the things we need.
-class LoadFeature(object):
+class Camera_utilities(object):
 
     def __init__(self):
     
         self.image_sub = rospy.Subscriber("/camera/rgb/image_raw",Image,self.camera_callback)
         self.bridge_object = CvBridge()
-        self.cv_image
-        self.cube_image
+        self.cv_image = None
+        self.cube_image = None
         
 
     def camera_callback(self,data):
@@ -27,19 +27,20 @@ class LoadFeature(object):
             self.cv_image = self.bridge_object.imgmsg_to_cv2(data, desired_encoding="bgr8")
         except CvBridgeError as e:
             print(e)
+        self.feature_detection()
 
-    def take_picture_of_cube():
+    def take_picture_of_cube(self):
         self.cube_image = np.copy(self.cv_image)
 
     #TODO implement this
-    def filter_colors(img, color):
+    def filter_colors(self, img, color):
         return False
 
     #TODO add picture parameters and remove HOG person detection     
     #TODO determine if the camera is the same as picture
-    def feature_detection():    
+    def feature_detection(self):    
 
-        image_1 = cv2.imread('/home/user/catkin_ws/src/project/images/wanted.jpg',1)
+        image_1 = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
         image_2 = self.cv_image
        
         
@@ -48,7 +49,7 @@ class LoadFeature(object):
         imY = 500
 
         #img_2 = cv2.resize(cv_image,(imX,imY))
-        img_2 = cv2.resize(cv_image,(imX,imY))
+        img_2 = cv2.resize(self.cv_image,(imX,imY))
         image_2 = img_2
 
         
@@ -141,5 +142,6 @@ def server_callback(request):
     return EmptyResponse()
 
 rospy.init_node('camera_service_server')
-my_service = rospy.Service('/camera_functions', Empty, server_callback)
+#my_service = rospy.Service('/camera_functions', Empty, server_callback)
+c_util = Camera_utilities()
 rospy.spin()
