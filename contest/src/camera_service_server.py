@@ -36,7 +36,7 @@ class Camera_utilities(object):
     def filter_colors(self, img, color):
         return False
 
-    #TODO add picture parameters and remove HOG person detection     
+    #TODO add picture parameters      
     #TODO determine if the camera is the same as picture
     def feature_detection(self):    
 
@@ -109,6 +109,16 @@ class Camera_utilities(object):
         #Using the Non-deterministic RANSAC method
         M, mask = cv2.findHomography(train_points, test_points, cv2.RANSAC, 5.0)
         # cv2.RANSAC,5.0
+        #print("start of m")
+        #print(len(mask))
+        #print("end of m")
+        #length of mask when hit is 137 
+        #when not detected its around 70
+
+        if (len(mask) > 120):
+            print("detected wanted person")
+        else:
+            print("not detected")
 
         #Catch the width and height from the main image
         h,w = gray_1.shape[:2]
