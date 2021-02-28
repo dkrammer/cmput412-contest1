@@ -7,6 +7,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+#rom utilities import set_position
+
 #TODO import a suitable message. 
 #from std_srvs.srv import Empty, EmptyResponse # you import the service message python classes generated from Empty.srv.
 
@@ -35,6 +37,8 @@ class Camera_utilities(object):
     #TODO implement this
     def filter_colors(self, img, color):
         return False
+
+    
 
     #TODO add picture parameters      
     #TODO determine if the camera is the same as picture
@@ -111,11 +115,18 @@ class Camera_utilities(object):
         # cv2.RANSAC,5.0
         #print("start of m")
         #print(len(mask))
+
+        #use this number, it is around 50 when wanted person is seen.
+        #robot is ~3 meters away
+        print(np.sum(mask))
+        match_number = np.sum(mask)
+        #print(mask)
         #print("end of m")
         #length of mask when hit is 137 
         #when not detected its around 70
+        heat = 30
 
-        if (len(mask) > 120):
+        if (match_number > heat):
             print("detected wanted person")
         else:
             print("not detected")
@@ -154,4 +165,5 @@ def server_callback(request):
 rospy.init_node('camera_service_server')
 #my_service = rospy.Service('/camera_functions', Empty, server_callback)
 c_util = Camera_utilities()
+
 rospy.spin()
