@@ -29,8 +29,9 @@ class Camera_utilities(object):
             self.cv_image = self.bridge_object.imgmsg_to_cv2(data, desired_encoding="bgr8")
         except CvBridgeError as e:
             print(e)
-        self.feature_detection()
+        print(self.detect_wanted())
 
+    #untested
     def take_picture_of_cube(self):
         self.cube_image = np.copy(self.cv_image)
 
@@ -38,13 +39,19 @@ class Camera_utilities(object):
     def filter_colors(self, img, color):
         return False
 
-    
+    def detect_wanted(self):
+        wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
+        detections = 0
+        for i in range(0,10):
+            if self.feature_detection(wanted_img,30):
+                detections += 1
+        return detections > 5
 
     #TODO add picture parameters      
     #TODO determine if the camera is the same as picture
-    def feature_detection(self):    
+    def feature_detection(self, ref_img, heat):    
 
-        image_1 = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
+        image_1 = ref_img
         image_2 = self.cv_image
        
         
@@ -118,18 +125,17 @@ class Camera_utilities(object):
 
         #use this number, it is around 50 when wanted person is seen.
         #robot is ~3 meters away
-        print(np.sum(mask))
+        #print(np.sum(mask))
         match_number = np.sum(mask)
         #print(mask)
         #print("end of m")
         #length of mask when hit is 137 
         #when not detected its around 70
-        heat = 30
 
-        if (match_number > heat):
-            print("detected wanted person")
-        else:
-            print("not detected")
+        #if (match_number > heat):
+            #print("detected wanted person")
+        #else:
+            #print("not detected")
 
         #Catch the width and height from the main image
         h,w = gray_1.shape[:2]
@@ -153,7 +159,9 @@ class Camera_utilities(object):
         cv2.imshow('Detection',image_2)       
         #cv2.imshow('Detection',addition)    
 
-        cv2.waitKey(1)
+        #cv2.waitKey(1)
+        return (match_number > heat)
+
 
 
 def server_callback(request):
