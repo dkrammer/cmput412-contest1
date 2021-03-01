@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-#rom utilities import set_position
+
 
 #TODO import a suitable message. 
 #from std_srvs.srv import Empty, EmptyResponse # you import the service message python classes generated from Empty.srv.
@@ -35,12 +35,16 @@ class Camera_utilities(object):
         #self.feature_detection(test_cube_img,20,30,1000)
 
     #Called when in middle of room and 4 meters away from cubes (-1,4,0)?
+    #TODO Actually implement this
     def which_cube_is_it():
         test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
         self.feature_detection(test_cube_img,20,30,1000)
-    
+
+    #Takes picture of cube and saves it as a class attribute and saves it as a file for testing
     def take_picture_of_cube(self):
         self.cube_image = np.copy(self.cv_image)
+
+        #save to file for testing
         cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg', self.cube_image)
         cv2.imshow('image',self.cube_image)
         cv2.waitKey(0)
@@ -49,6 +53,8 @@ class Camera_utilities(object):
     def filter_colors(self, img, color):
         return False
 
+    #Returns true if it has detected the wanted person in the picture
+    #only returns true if it has detected it a certian number of times
     def detect_wanted(self):
         wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
         detections = 0
@@ -57,7 +63,9 @@ class Camera_utilities(object):
                 detections += 1
         return detections > 5
 
-
+    #returns true if it detected the object. num_matches is number of matches BF feature detection uses.
+    #heat is how sensitive the detection is, higher is less sensitive, lower means more sensitive but more false positives
+    #num_features is how many features the ORB algorithm uses. 
     def feature_detection(self, ref_img, num_matches=390, heat=30, num_features=2000):    
 
         image_1 = ref_img
@@ -161,18 +169,20 @@ class Camera_utilities(object):
         # Draw the points of the new perspective in the result image (This is considered the bounding box)
         result = cv2.polylines(image_2, [np.int32(dst)], True, (50,0,255),3, cv2.LINE_AA)
 
-        #addition = cv2.add(img_2,image_2)
+        
         cv2.imshow('image',img_2)
         cv2.imshow('Points',preview_1)
         
         cv2.imshow('Detection',image_2)       
-        #cv2.imshow('Detection',addition)    
+           
 
-        cv2.waitKey(1)
+
+        #uncomment this to see it visually
+        #cv2.waitKey(1)
         return (match_number > heat)
 
 
-
+#TODO implement proper message so it can call different functions in the Camera_utilities class
 def server_callback(request):
     print("my callback has been called")
     #depending on what is in the message, do a certian thing
