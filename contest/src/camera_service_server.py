@@ -30,10 +30,20 @@ class Camera_utilities(object):
         except CvBridgeError as e:
             print(e)
         print(self.detect_wanted())
+        #self.take_picture_of_cube()
+        #test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
+        #self.feature_detection(test_cube_img,20,30,1000)
 
-    #untested
+    #Called when in middle of room and 4 meters away from cubes (-1,4,0)?
+    def which_cube_is_it():
+        test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
+        self.feature_detection(test_cube_img,20,30,1000)
+    
     def take_picture_of_cube(self):
         self.cube_image = np.copy(self.cv_image)
+        cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg', self.cube_image)
+        cv2.imshow('image',self.cube_image)
+        cv2.waitKey(0)
 
     #TODO implement this
     def filter_colors(self, img, color):
@@ -43,13 +53,12 @@ class Camera_utilities(object):
         wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
         detections = 0
         for i in range(0,10):
-            if self.feature_detection(wanted_img,30):
+            if self.feature_detection(wanted_img,390,30):
                 detections += 1
         return detections > 5
 
-    #TODO add picture parameters      
-    #TODO determine if the camera is the same as picture
-    def feature_detection(self, ref_img, heat):    
+
+    def feature_detection(self, ref_img, num_matches=390, heat=30, num_features=2000):    
 
         image_1 = ref_img
         image_2 = self.cv_image
@@ -73,7 +82,7 @@ class Camera_utilities(object):
         gray_2 = cv2.cvtColor(image_2, cv2.COLOR_RGB2GRAY)
 
         #Initialize the ORB Feature detector 
-        orb = cv2.ORB_create(nfeatures = 2000)
+        orb = cv2.ORB_create(nfeatures = num_features)
 
         #Make a copy of the original image to display the keypoints found by ORB
         #This is just a representative
@@ -108,7 +117,7 @@ class Camera_utilities(object):
         #Catch some of the matching points to draw
         
             
-        good_matches = matches[:390] 
+        good_matches = matches[:num_matches] 
         
 
         #Parse the feature points
@@ -159,7 +168,7 @@ class Camera_utilities(object):
         cv2.imshow('Detection',image_2)       
         #cv2.imshow('Detection',addition)    
 
-        #cv2.waitKey(1)
+        cv2.waitKey(1)
         return (match_number > heat)
 
 
