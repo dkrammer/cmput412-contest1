@@ -29,14 +29,15 @@ class Camera_utilities(object):
             self.cv_image = self.bridge_object.imgmsg_to_cv2(data, desired_encoding="bgr8")
         except CvBridgeError as e:
             print(e)
-        print(self.detect_wanted())
+        #print(self.detect_wanted())
         #self.take_picture_of_cube()
         #test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
         #self.feature_detection(test_cube_img,20,30,1000)
+        self.which_cube_is_it()
 
     #Called when in middle of room and 4 meters away from cubes (-1,4,0)?
     #TODO Actually implement this
-    def which_cube_is_it():
+    def which_cube_is_it(self):
         test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
         self.feature_detection(test_cube_img,20,30,1000)
 
@@ -62,6 +63,8 @@ class Camera_utilities(object):
             if self.feature_detection(wanted_img,390,30):
                 detections += 1
         return detections > 5
+
+
 
     #returns true if it detected the object. num_matches is number of matches BF feature detection uses.
     #heat is how sensitive the detection is, higher is less sensitive, lower means more sensitive but more false positives
@@ -169,7 +172,19 @@ class Camera_utilities(object):
         # Draw the points of the new perspective in the result image (This is considered the bounding box)
         result = cv2.polylines(image_2, [np.int32(dst)], True, (50,0,255),3, cv2.LINE_AA)
 
-        
+
+        new_dst = np.int32(dst)
+
+        x_avg = 0
+        for i in range(4):
+            x_avg += np.int32(new_dst)[i][0][0]
+        x_avg = x_avg / 4
+
+
+
+
+        print(x_avg)
+        print('out of 700')
         cv2.imshow('image',img_2)
         cv2.imshow('Points',preview_1)
         
@@ -178,7 +193,7 @@ class Camera_utilities(object):
 
 
         #uncomment this to see it visually
-        #cv2.waitKey(1)
+        cv2.waitKey(1)
         return (match_number > heat)
 
 
@@ -192,5 +207,6 @@ def server_callback(request):
 rospy.init_node('camera_service_server')
 #my_service = rospy.Service('/camera_functions', Empty, server_callback)
 c_util = Camera_utilities()
+
 
 rospy.spin()
