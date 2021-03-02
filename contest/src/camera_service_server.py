@@ -36,7 +36,8 @@ class Camera_utilities(object):
         print(self.which_cube_is_it())
 
     #Called when in middle of room and 4 meters away from cubes (-1,4,0)?
-    #TODO Actually implement this
+    #gets x location of bounding box and returns string of where it is in the image
+    #TODO use self.cube_image instead of from file
     def which_cube_is_it(self):
         test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
         is_match, x = self.feature_detection(test_cube_img,20,30,1000)
@@ -87,7 +88,7 @@ class Camera_utilities(object):
         imX = 700
         imY = 500
 
-        #img_2 = cv2.resize(cv_image,(imX,imY))
+        
         img_2 = cv2.resize(self.cv_image,(imX,imY))
         image_2 = img_2
 
@@ -125,9 +126,7 @@ class Camera_utilities(object):
 
         #Initialize the BruteForce Matcher
         bf = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck = True)
-        #bf = cv2.FlannBasedMatcher.create()
-        #bf = cv2.DescriptorMatcher_create(cv2.DescriptorMatcher_FLANNBASED)
-        #bf = cv2.DescriptorMatcher_FLANNBASED
+   
         #Match the feature points from both images
         matches = bf.match(train_descriptor, test_descriptor)
 
@@ -147,23 +146,13 @@ class Camera_utilities(object):
         #With the homography we are trying to find perspectives between two planes
         #Using the Non-deterministic RANSAC method
         M, mask = cv2.findHomography(train_points, test_points, cv2.RANSAC, 5.0)
-        # cv2.RANSAC,5.0
-        #print("start of m")
-        #print(len(mask))
+
 
         #use this number, it is around 50 when wanted person is seen.
         #robot is ~3 meters away
         #print(np.sum(mask))
         match_number = np.sum(mask)
-        #print(mask)
-        #print("end of m")
-        #length of mask when hit is 137 
-        #when not detected its around 70
 
-        #if (match_number > heat):
-            #print("detected wanted person")
-        #else:
-            #print("not detected")
 
         #Catch the width and height from the main image
         h,w = gray_1.shape[:2]
@@ -191,8 +180,7 @@ class Camera_utilities(object):
 
 
 
-        #print(x_avg)
-        #print('out of 700')
+
         cv2.imshow('image',img_2)
         cv2.imshow('Points',preview_1)
         
