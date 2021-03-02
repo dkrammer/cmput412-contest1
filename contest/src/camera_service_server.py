@@ -33,13 +33,20 @@ class Camera_utilities(object):
         #self.take_picture_of_cube()
         #test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
         #self.feature_detection(test_cube_img,20,30,1000)
-        self.which_cube_is_it()
+        print(self.which_cube_is_it())
 
     #Called when in middle of room and 4 meters away from cubes (-1,4,0)?
     #TODO Actually implement this
     def which_cube_is_it(self):
         test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
-        self.feature_detection(test_cube_img,20,30,1000)
+        is_match, x = self.feature_detection(test_cube_img,20,30,1000)
+        #print(x)
+        if x < 200:
+            return 'left'
+        elif x > 400:
+            return 'right'
+        else:
+            return 'center'
 
     #Takes picture of cube and saves it as a class attribute and saves it as a file for testing
     def take_picture_of_cube(self):
@@ -60,7 +67,8 @@ class Camera_utilities(object):
         wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
         detections = 0
         for i in range(0,10):
-            if self.feature_detection(wanted_img,390,30):
+            is_match, x = self.feature_detection(wanted_img,390,30)
+            if is_match:
                 detections += 1
         return detections > 5
 
@@ -183,8 +191,8 @@ class Camera_utilities(object):
 
 
 
-        print(x_avg)
-        print('out of 700')
+        #print(x_avg)
+        #print('out of 700')
         cv2.imshow('image',img_2)
         cv2.imshow('Points',preview_1)
         
@@ -193,8 +201,8 @@ class Camera_utilities(object):
 
 
         #uncomment this to see it visually
-        cv2.waitKey(1)
-        return (match_number > heat)
+        #cv2.waitKey(1)
+        return (match_number > heat), x_avg
 
 
 #TODO implement proper message so it can call different functions in the Camera_utilities class
