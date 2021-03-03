@@ -41,12 +41,17 @@ class Camera_utilities(object):
     #TODO use self.cube_image instead of from file
     def which_cube_is_it(self, path):
         #test_cube_img = cv2.imread('/home/user/catkin_ws/src/km/src/test_cube2.jpg',1)
-        test_cube_img = cv2.imread(path, 1)
-        is_match, x, num_matches = self.feature_detection(test_cube_img,20,30,1000)
+        x_avg = 0
+        for i in range(5):
+
+            test_cube_img = cv2.imread(path, 1)
+            is_match, x, num_matches = self.feature_detection(test_cube_img,20,30,1000)
+            x_avg += x
+        x_avg = x_avg/5
         #print(x)
-        if x < 200:
+        if x_avg < 200:
             return 'left'
-        elif x > 400:
+        elif x_avg > 400:
             return 'right'
         else:
             return 'center'
@@ -78,19 +83,22 @@ class Camera_utilities(object):
         return detections > 5
 
     def get_number_of_block(self):
-        largest = np.zeros(10)
-        for i in range(1,10):
+        second_order_largest = np.zeros(10)
+        for k in range(5):
+            largest = np.zeros(10)
+            for i in range(1,10):
             
-            #block_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/'+ str(i) + '.jpg',1)
-            block_img = cv2.imread('/home/user/catkin_ws/src/km/src/cubes/'+ str(i) + '.jpg',1)
-            match, x, match_number = self.feature_detection(block_img, 20,20,1000)
-            #cv2.imshow('block_img',block_img)
-            #cv2.waitKey(0)
-            #print(i)
-            #print(match)
-            largest[i] = match_number
+                #block_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/'+ str(i) + '.jpg',1)
+                block_img = cv2.imread('/home/user/catkin_ws/src/km/src/cubes/'+ str(i) + '.jpg',1)
+                match, x, match_number = self.feature_detection(block_img, 20,20,1000)
+                #cv2.imshow('block_img',block_img)
+                #cv2.waitKey(0)
+                #print(i)
+                #print(match)
+                largest[i] = match_number
+            second_order_largest[np.argmax(second_order_largest)] += 1
 
-        return np.argmax(largest)
+        return np.argmax(second_order_largest)
                 
 
         #cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/1.jpg',1)
