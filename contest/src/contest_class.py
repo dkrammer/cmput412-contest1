@@ -25,7 +25,6 @@ class ContestClass():
         self.move([(-3, -5.5)]) # Values work for suspect
         rospy.loginfo("Scanning")
         
-        #self.move([(-4.5, -5.2)])
         self.move_obj.face_point(0, -5.2)
 
         if self.cam_obj.detect_wanted():
@@ -41,13 +40,13 @@ class ContestClass():
     
     def task_two(self):
         path = [(-7, 7.5), (-5, 7.5)]
-        rospy.loginfo("Stopped at stop sign 2")
-        rospy.loginfo("Skipping task 2")
         self.move(path)
-        time.sleep(0.5)
+        rospy.loginfo("Stopped at stop sign 2")
+        time.sleep(0.3)
+        rospy.loginfo("Skipping task 2")
 
     def task_three(self):
-        path = [(7.5, 7), (7.5, -7.5), (5.5, -7.5)]
+        path = [(7.5, 7), (7.5, -7.5), (5.5, -8)]
         self.move(path)
         rospy.loginfo("Stopped at stop sign 3")
         rospy.loginfo("Entering task 3")
@@ -57,7 +56,7 @@ class ContestClass():
         rospy.loginfo("Started task 3")
         self.move([(3.9, -5.9)])
         self.move_obj.face_point(0, -5.9)
-        time.sleep(1)
+        time.sleep(0.5)
         self.cam_obj.take_picture_of_cube()
         rospy.loginfo("Took picture of key cube")
 
@@ -88,8 +87,8 @@ class ContestClass():
                 rospy.loginfo("Exiting task 3")
            
         elif location == "center":
-            self.move([(4, 1), (4, 3)])
-            self.move_obj.face_point(4, 5)
+            self.move([(3.9, 3)])
+            self.move_obj.face_point(3.9, 5)
             rospy.loginfo("Scanning Center Cube")
             center_num = self.cam_obj.get_number_of_block()
             rospy.loginfo("Number " + str(center_num) + " found on center block")
@@ -119,31 +118,6 @@ class ContestClass():
                 rospy.loginfo("Number " + str(number) + " not present in room")
                 rospy.loginfo("Exiting task 3")
         
-
-        '''
-        
-        self.move([(4, 3)])
-        self.move_obj.face_point(4, 5)
-        rospy.loginfo("Scanning Middle Cube")
-        rospy.loginfo("Scanned number is #")
-        # mid_num = #
-        # if mid_num = number:
-            # rospy.loginfo("Number # found on middle block")
-            # rospy.loginfo("Exiting task 3")
-            # return
-        
-        self.move([(5.5, 3)])
-        self.move_obj.face_point(5.5, 5)
-        rospy.loginfo("Scanning Right Cube")
-        rospy.loginfo("Scanned number is #")
-        # right_num = #
-        # if right_num = number:
-            # rospy.loginfo("Number # found on right block")
-            # rospy.loginfo("Exiting task 3")
-            # return
-        
-        rospy.loginfo("Scanned number not found on any of the blocks")
-        '''
         rospy.loginfo("Exiting task 3")
     
     def task_four(self):

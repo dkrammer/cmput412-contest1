@@ -61,8 +61,8 @@ class Camera_utilities(object):
         self.cube_image = np.copy(self.cv_image)
 
         #save to file for testing
-        #cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg', self.cube_image)
-        cv2.imwrite('/home/user/catkin_ws/src/km/src/key_cube.jpg', self.cube_image)
+        cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/key_cube.jpg', self.cube_image)
+        #cv2.imwrite('/home/user/catkin_ws/src/km/src/key_cube.jpg', self.cube_image)
         cv2.imshow('image',self.cube_image)
         cv2.waitKey(30)
 
@@ -73,8 +73,8 @@ class Camera_utilities(object):
     #Returns true if it has detected the wanted person in the picture
     #only returns true if it has detected it a certian number of times
     def detect_wanted(self):
-        #wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
-        wanted_img = cv2.imread('/home/user/catkin_ws/src/km/src/wanted_cropped.jpg',1)
+        wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
+        #wanted_img = cv2.imread('/home/user/catkin_ws/src/km/src/wanted_cropped.jpg',1)
         detections = 0
         for i in range(0,10):
             is_match, x, num_matches = self.feature_detection(wanted_img,390,30)
@@ -88,8 +88,8 @@ class Camera_utilities(object):
             largest = np.zeros(10)
             for i in range(1,10):
             
-                #block_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/'+ str(i) + '.jpg',1)
-                block_img = cv2.imread('/home/user/catkin_ws/src/km/src/cubes/'+ str(i) + '.jpg',1)
+                block_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/'+ str(i) + '.jpg',1)
+                #block_img = cv2.imread('/home/user/catkin_ws/src/km/src/cubes/'+ str(i) + '.jpg',1)
                 match, x, match_number = self.feature_detection(block_img, 20,20,1000)
                 #cv2.imshow('block_img',block_img)
                 #cv2.waitKey(0)

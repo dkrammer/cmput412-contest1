@@ -10,7 +10,7 @@ def main():
 
     rospy.init_node('contest_node', anonymous=True)
     contest_obj = ContestClass()
-    time.sleep(0.1)
+    time.sleep(0.2)
     
     contest_obj.task_one()
     contest_obj.task_two()

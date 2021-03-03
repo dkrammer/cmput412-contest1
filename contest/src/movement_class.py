@@ -61,43 +61,6 @@ class MovementClass():
         msg.angular.z = angular_velocity
         self.vel_pub.publish(msg)
 
-    '''
-    def move_forward(self, distance):
-        rospy.loginfo("Moving forward" + str(distance) + "m")
-
-        self.move.linear.x = self.linear_velocity
-        self.move.angular.z = self.angular_velocity
-
-        s = distance / self.linear_velocity
-        hz = math.floor(1/s)
-        print("hz:", hz)
-        while (hz != 0):
-            print("hz:", hz)
-            hz -= self.freq
-            self.rate.sleep()
-
-        self.stop()
-
-    def turn(self, linear_velocity=0.5, angular_velocity=0.5):
-        # At a rate of 10 Hz, it takes
-        # pi s to turn pi/2 rad when 
-        # |angular velocity| = 0.5 rad/s
-        
-        # This achieves a turning radius
-        # of 0.5m
-
-        hz = 30
-        self.move.linear.x = linear_velocity
-        self.move.angular.z = angular_velocity
-        self.publish_info()
-
-        while (hz != 0):
-            hz -= self.freq
-            self.rate.sleep()
-        
-        self.move.angular.z = 0.0
-        self.publish_info()
-    '''
 
     # returns the distance between two points
     def distance(self, point1, point2):
@@ -186,38 +149,9 @@ class MovementClass():
         else:
             return theta
 
-    '''
-    def go_to_linear(self, x_goal, y_goal):
-        tol = 1
-        dx = x_goal - self.current_pose['x']
-        dy = y_goal - self.current_pose['y']
 
-        self.face_point(x_goal, y_goal)
-
-        while (self.distance(self.get_current_position(), [x_goal, y_goal]) > tol):
-            self.move.linear.x = self.linear_velocity
-            self.move.angular.z = self.angular_velocity
-            self.publish_info()
-            self.rate.sleep()
-        self.stop()
-    
-    def get_current_position(self):
-        return [self.current_pose['x'], self.current_pose['y']]
-        '''
-
-'''
-def main():
-    
-    move_obj = MovementClass()
-    path = [(-8, -8, 0), (-8, 8, 0), (8, 8, 0), (8, -8, 0)]
-    for point in path:
-            x, y, th = point
-            go_to(move_obj, x, y, th)
-
-main()
-'''
 if __name__ == '__main__':
-    rospy.init_node('km_node', anonymous=True)
+    rospy.init_node('movement_node', anonymous=True)
     move_obj = MovementClass()
     time.sleep(0.05)
     move_obj.go_to(-0.6, -8.1, -180)
