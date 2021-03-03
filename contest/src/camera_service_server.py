@@ -96,7 +96,7 @@ class Camera_utilities(object):
                 #print(i)
                 #print(match)
                 largest[i] = match_number
-            second_order_largest[np.argmax(second_order_largest)] += 1
+            second_order_largest[np.argmax(largest)] += 1
 
         return np.argmax(second_order_largest)
                 
