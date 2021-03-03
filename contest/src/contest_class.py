@@ -52,9 +52,9 @@ class ContestClass():
         rospy.loginfo("Entering task 3")
         
         # Takes picture of cube
-        self.move([(5.5, -5.8)])
+        self.move([(5.5, -5.9)])
         rospy.loginfo("Started task 3")
-        self.move([(4.1, -5.8)])
+        self.move([(3.9, -5.9)])
         self.move_obj.face_point(0, -5.9)
         time.sleep(0.5)
         self.cam_obj.take_picture_of_cube()
@@ -64,7 +64,7 @@ class ContestClass():
         rospy.loginfo("Number detected: " + str(number))
 
         # Moves in front of cubes
-        self.move([(4.1, 1)])
+        self.move([(3.9, 1)])
         rospy.loginfo("Moved in front of cubes")
 
         rospy.loginfo("Scanning Cubes")
