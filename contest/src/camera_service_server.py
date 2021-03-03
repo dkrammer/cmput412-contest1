@@ -34,13 +34,14 @@ class Camera_utilities(object):
         #test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
         #self.feature_detection(test_cube_img,20,30,1000)
         print(self.which_cube_is_it())
+        #print(self.get_number_of_block())
 
     #Called when in middle of room and 4 meters away from cubes (-1,4,0)?
     #gets x location of bounding box and returns string of where it is in the image
     #TODO use self.cube_image instead of from file
     def which_cube_is_it(self):
         test_cube_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/test_cube.jpg',1)
-        is_match, x = self.feature_detection(test_cube_img,20,30,1000)
+        is_match, x, num_matches = self.feature_detection(test_cube_img,20,30,1000)
         #print(x)
         if x < 200:
             return 'left'
@@ -68,10 +69,28 @@ class Camera_utilities(object):
         wanted_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted_cropped.jpg',1)
         detections = 0
         for i in range(0,10):
-            is_match, x = self.feature_detection(wanted_img,390,30)
+            is_match, x, num_matches = self.feature_detection(wanted_img,390,30)
             if is_match:
                 detections += 1
         return detections > 5
+
+    def get_number_of_block(self):
+        largest = np.zeros(10)
+        for i in range(1,10):
+            
+            block_img = cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/'+ str(i) + '.jpg',1)
+            match, x, match_number = self.feature_detection(block_img, 20,20,1000)
+            #cv2.imshow('block_img',block_img)
+            #cv2.waitKey(0)
+            #print(i)
+            #print(match)
+            largest[i] = match_number
+
+        return np.argmax(largest)
+                
+
+        #cv2.imread('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/1.jpg',1)
+
 
 
 
@@ -190,7 +209,8 @@ class Camera_utilities(object):
 
         #uncomment this to see it visually
         #cv2.waitKey(1)
-        return (match_number > heat), x_avg
+        #print(match_number)
+        return (match_number > heat), x_avg, match_number
 
 
 #TODO implement proper message so it can call different functions in the Camera_utilities class
@@ -203,6 +223,7 @@ def server_callback(request):
 rospy.init_node('camera_service_server')
 #my_service = rospy.Service('/camera_functions', Empty, server_callback)
 c_util = Camera_utilities()
+
 
 
 rospy.spin()

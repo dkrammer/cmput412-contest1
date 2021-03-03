@@ -27,7 +27,7 @@ class Sobel(object):
         #drone_image = cv2.imwrite('drone_image.jpg',cv_image)
         
         #cv2.imshow('original',img)
-        drone_img = cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/wanted.jpg', cv_image)
+        drone_img = cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/cubes/6.jpg', cv_image)
 
 
         cv2.waitKey(0)
