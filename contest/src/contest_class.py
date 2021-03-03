@@ -39,22 +39,22 @@ class ContestClass():
         rospy.loginfo("Exited task 1")
     
     def task_two(self):
-        path = [(-7, 7.5), (-5, 7.5)]
+        path = [(-7, 8), (-5, 8.5)]
         self.move(path)
         rospy.loginfo("Stopped at stop sign 2")
         time.sleep(0.3)
         rospy.loginfo("Skipping task 2")
 
     def task_three(self):
-        path = [(7.5, 7), (7.5, -7.5), (5.5, -8)]
+        path = [(7.5, 7), (8, -7.5), (6, -8)]
         self.move(path)
         rospy.loginfo("Stopped at stop sign 3")
         rospy.loginfo("Entering task 3")
         
         # Takes picture of cube
-        self.move([(5.5, -5.9)])
+        self.move([(6, -5.9)])
         rospy.loginfo("Started task 3")
-        self.move([(3.9, -5.9)])
+        self.move([(4.2, -5.9)])
         self.move_obj.face_point(0, -5.9)
         time.sleep(0.5)
         self.cam_obj.take_picture_of_cube()
@@ -69,7 +69,7 @@ class ContestClass():
 
         rospy.loginfo("Scanning Cubes")
         location = self.cam_obj.which_cube_is_it('/home/user/catkin_ws/src/cmput412-contest1/contest/src/key_cube.jpg')
-        rospy.loginfo("It is the " + location + " cube")
+        #rospy.loginfo("It is the " + location + " cube")
 
         if location == "left":
             self.move([(2, 1), (2, 3)])

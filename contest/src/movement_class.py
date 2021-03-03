@@ -17,8 +17,8 @@ class MovementClass():
         self.vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         self.move = Twist()
         
-        self.linear_velocity = 1
-        self.face_point_vel = 1
+        self.linear_velocity = 0.8
+        self.face_point_vel = 0.8
 
         self.current_pose = {}
         self.exit_topic = False
@@ -102,6 +102,7 @@ class MovementClass():
             self.publish_info()
             self.rate.sleep()
         self.stop()
+        time.sleep(0.2)
     
     #this will ensure that no matter where the robot ends up after the spiral
     #it will point directly at the next point
@@ -118,7 +119,7 @@ class MovementClass():
             rospy.sleep(0.01)
         self.move.angular.z = 0
         self.publish_info()
-        time.sleep(0.05)
+        time.sleep(0.1)
         return target_theta
 
     def get_thetas(self, x, y):

@@ -63,7 +63,7 @@ class Camera_utilities(object):
         #save to file for testing
         cv2.imwrite('/home/user/catkin_ws/src/cmput412-contest1/contest/src/key_cube.jpg', self.cube_image)
         #cv2.imwrite('/home/user/catkin_ws/src/km/src/key_cube.jpg', self.cube_image)
-        cv2.imshow('image',self.cube_image)
+        #cv2.imshow('image',self.cube_image)
         cv2.waitKey(30)
 
     #TODO implement this
@@ -212,10 +212,10 @@ class Camera_utilities(object):
 
 
 
-        cv2.imshow('image',img_2)
-        cv2.imshow('Points',preview_1)
+        #cv2.imshow('image',img_2)
+        #cv2.imshow('Points',preview_1)
         
-        cv2.imshow('Detection',image_2)       
+        #cv2.imshow('Detection',image_2)       
            
 
 
