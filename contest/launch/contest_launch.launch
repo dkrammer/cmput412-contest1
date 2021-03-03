@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg ="km"
+        type="main.py"
+        name="contest_node"
+        output="screen">
+  </node>
+
+</launch>
