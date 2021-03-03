@@ -52,9 +52,9 @@ class ContestClass():
         rospy.loginfo("Entering task 3")
         
         # Takes picture of cube
-        self.move([(5.5, -5.9)])
+        self.move([(5.5, -5.8)])
         rospy.loginfo("Started task 3")
-        self.move([(3.9, -5.9)])
+        self.move([(4.1, -5.8)])
         self.move_obj.face_point(0, -5.9)
         time.sleep(0.5)
         self.cam_obj.take_picture_of_cube()
@@ -64,11 +64,11 @@ class ContestClass():
         rospy.loginfo("Number detected: " + str(number))
 
         # Moves in front of cubes
-        self.move([(3.9, 1)])
+        self.move([(4.1, 1)])
         rospy.loginfo("Moved in front of cubes")
 
         rospy.loginfo("Scanning Cubes")
-        location = self.cam_obj.which_cube_is_it('/home/user/catkin_ws/src/km/src/key_cube.jpg')
+        location = self.cam_obj.which_cube_is_it('/home/user/catkin_ws/src/cmput412-contest1/contest/src/key_cube.jpg')
         rospy.loginfo("It is the " + location + " cube")
 
         if location == "left":
@@ -123,7 +123,7 @@ class ContestClass():
     def task_four(self):
         self.move([(6, -8)])
         rospy.loginfo("Exited task 3")
-        self.move([(0, -8)])
+        self.move([(-0.5, -8.3)])
         rospy.loginfo("Stopped at stop sign 4")
         rospy.loginfo("End of loop.")
 
